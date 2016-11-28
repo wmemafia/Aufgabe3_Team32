@@ -31,6 +31,27 @@ converter.fromFile("./world_data.csv", function(err, result) {
 ********************** handle HTTP METHODS ***********************
 **************************************************************************/
 
+/**
+* GET-Methods
+*/
+
+app.get('/items', function(req, res) {
+    res.send(JSON.stringify(data));
+});
+
+
+app.get('/items/:id', function(req, res) {
+    var id = req.params.id;
+    var country = data.find(function(element) {
+        return element.id == id;
+    })
+    if( country !== undefined) {
+        res.send(JSON.stringify(country));
+    } else {
+        res.status(404).send('No such id {' + id + '} in database!');
+    } 
+});
+
 
 // DO NOT CHANGE!
 // bind server to port
