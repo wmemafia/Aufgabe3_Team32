@@ -36,7 +36,7 @@ converter.fromFile("./world_data.csv", function(err, result) {
 */
 
 app.get('/items', function(req, res) {
-    res.send(JSON.stringify(data));
+    res.send(JSON.stringify(data, null, 4));
 });
 
 
@@ -44,12 +44,31 @@ app.get('/items/:id', function(req, res) {
     var id = req.params.id;
     var country = data.find(function(element) {
         return element.id == id;
-    })
+    });
     if( country !== undefined) {
-        res.send(JSON.stringify(country));
+        res.send(JSON.stringify(country, null, 4));
     } else {
-        res.status(404).send('No such id {' + id + '} in database!');
+        res.status(404).send('No such id {' + id + '} in database.');
     } 
+});
+
+
+/**
+* DELETE-Methods
+*/
+app.delete('/items/:id', function(req, res) {
+    var id = req.params.id;
+    var index = data.findIndex(function(element) {
+        return element.id == id;
+    });
+    
+    if(index >= 0) {
+        data.splice(index, 1);
+        res.send('Item {' + id + '} deleted successfully.');
+    } else {
+        res.status(404).send('No such id {' + id + '} in database');
+    }
+    
 });
 
 
