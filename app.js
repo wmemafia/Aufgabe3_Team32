@@ -90,20 +90,59 @@ app.get('/properties', function(req, res) {
     }
 });
 
+/**
+* returns the property with the given number if exists
+*/
 app.get('/properties/:num', function(req, res) {
     var num = req.params.num;
     if(data.length > 0) {
         // #TODO: check if num in bounds of array (NaN ??)
         var keys = Object.keys(data[0]);
-        res.send(keys[num]);
+        if(keys[num] !== undefined) {
+            res.send(keys[num]);
+        } else {
+            res.send('No such property available.');
+        }
+        
     } else {
         res.send('No data available');
     }
-})
+});
+
+/**
+* POST-Methods
+*/
+
+
+app.post('/items', function(req, res) {
+    var name = req.body.country_name;
+    var birth = req.body.country_birth;
+    var cellphone = req.body.country_cellphone;
+    // maybe we should validate the input more
+   // #TODO: we could adjust the json to fit in the original pattern
+    data.push(req.body);
+    res.send('Added country ' + name + ' to list!');
+});
 
 
 /**
 * DELETE-Methods
+*/
+
+/**
+* deletes the last country
+*/
+app.delete('/items', function(req, res) {
+    if(data.length > 0) {
+        var popped = data.pop();
+        res.send('Deleted last country: ' + popped.name);
+    } else {
+        res.send('No data available.');
+    }
+});
+
+/**
+* deletes the country with the given id
 */
 app.delete('/items/:id', function(req, res) {
     var id = req.params.id;
@@ -117,8 +156,8 @@ app.delete('/items/:id', function(req, res) {
     } else {
         res.status(404).send('No such id {' + id + '} in database');
     }
-    
 });
+
 
 
 // DO NOT CHANGE!
