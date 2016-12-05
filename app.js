@@ -62,8 +62,8 @@ app.get('/items/:id', function(req, res) {
 * get countries in defined range with properties
 */
 app.get('/items/:id1/:id2', function(req, res) {
-    var id1 = req.params.id1 <= req.params.id2 ? req.params.id1 : req.params.id2;
-    var id2 = req.params.id1 >= req.params.id2 ? req.params.id1 : req.params.id2;
+    var id1 = +req.params.id1 <= +req.params.id2 ? +req.params.id1 : +req.params.id2;
+    var id2 = +req.params.id1 >= +req.params.id2 ? +req.params.id1 : +req.params.id2;
     var result = [];
     for (i = id1; i <= id2; i++){
         if(country = data.find(function(element) {
