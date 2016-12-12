@@ -144,4 +144,27 @@ $('#country_add').submit(function(event) {
     event.preventDefault();
 });
 
+// delete data
+$('#country_delete').submit(function(event) {
+    if(!$('#country_delete_id').val()){
+        $.ajax({
+            type: 'DELETE',
+            url: 'http://localhost:3000/items',
+            success: function() {
+                location.reload();
+            }
+        });
+    } else {
+        $.ajax({
+            type: 'DELETE',
+            url: 'http://localhost:3000/items/' + $('#country_delete_id').val(),
+            success: function() {
+                $('#country_delete_id').val('');
+                location.reload();
+            }
+        });
+    }
+    event.preventDefault();
+})
+
 
