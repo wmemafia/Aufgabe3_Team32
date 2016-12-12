@@ -8,17 +8,17 @@ var bodyParser = require('body-parser');
 var Converter = require("csvtojson").Converter;
 
 //register body-parser to handle json from res / req
-app.use( bodyParser.json() );
+app.use(bodyParser.json());
 
 //register public dir to serve static files (html, css, js)
-app.use( express.static( path.join(__dirname, "public") ) );
+app.use(express.static(path.join(__dirname, "public")));
 
 // END DO NOT CHANGE!
 
 
 /**************************************************************************
-****************************** csv2json *********************************
-**************************************************************************/
+ ****************************** csv2json *********************************
+ **************************************************************************/
 
 var data = [];
 
@@ -28,47 +28,52 @@ converter.fromFile("./world_data.csv", function(err, result) {
 });
 
 /**************************************************************************
-********************** handle HTTP METHODS ***********************
-**************************************************************************/
+ ********************** handle HTTP METHODS ***********************
+ **************************************************************************/
 
 /**
-* GET-Methods
-*/
+ * GET-Methods
+ */
 
 
 /**
-* get all countries wirh properties
-*/
+ * get all countries with properties
+ */
 app.get('/items', function(req, res) {
     res.send(data);
 });
 
 /**
-* get country with given id and properties
-*/
+ * get country with given id and properties
+ */
 app.get('/items/:id', function(req, res) {
     var id = req.params.id;
     var country = data.find(function(element) {
         return element.id == id;
     });
+<<<<<<< HEAD
     if( country !== undefined) {
         res.send(country);
+=======
+    if (country !== undefined) {
+        res.send(JSON.stringify(country, null, 4));
+>>>>>>> Fix Typo
     } else {
         res.status(404).send('No such id {' + id + '} in database.');
-    } 
+    }
 });
 
 /**
-* get countries in defined range with properties
-*/
+ * get countries in defined range with properties
+ */
 app.get('/items/:id1/:id2', function(req, res) {
     var id1 = +req.params.id1 <= +req.params.id2 ? +req.params.id1 : +req.params.id2;
     var id2 = +req.params.id1 >= +req.params.id2 ? +req.params.id1 : +req.params.id2;
     var result = [];
-    for (i = id1; i <= id2; i++){
-        if(country = data.find(function(element) {
-            return element.id == i;
-        })) {
+    for (i = id1; i <= id2; i++) {
+        if (country = data.find(function(element) {
+                return element.id == i;
+            })) {
             result.push(country);
         }
     }
@@ -80,38 +85,43 @@ app.get('/items/:id1/:id2', function(req, res) {
 });
 
 /**
-* returns all the properties of a data object
-*/
+ * returns all the properties of a data object
+ */
 app.get('/properties', function(req, res) {
+<<<<<<< HEAD
     if(data.length > 0) {
         res.send(Object.keys(data[0]));
+=======
+    if (data.length > 0) {
+        res.send(JSON.stringify(Object.keys(data[0])));
+>>>>>>> Fix Typo
     } else {
         res.send('No data available');
     }
 });
 
 /**
-* returns the property with the given number if exists
-*/
+ * returns the property with the given number if exists
+ */
 app.get('/properties/:num', function(req, res) {
     var num = req.params.num;
-    if(data.length > 0) {
+    if (data.length > 0) {
         // #TODO: check if num in bounds of array (NaN ??)
         var keys = Object.keys(data[0]);
-        if(keys[num] !== undefined) {
+        if (keys[num] !== undefined) {
             res.send(keys[num]);
         } else {
             res.send('No such property available.');
         }
-        
+
     } else {
         res.send('No data available');
     }
 });
 
 /**
-* POST-Methods
-*/
+ * POST-Methods
+ */
 
 
 app.post('/items', function(req, res) {
@@ -119,21 +129,21 @@ app.post('/items', function(req, res) {
     var birth = req.body.country_birth;
     var cellphone = req.body.country_cellphone;
     // maybe we should validate the input more
-   // #TODO: we could adjust the json to fit in the original pattern
+    // #TODO: we could adjust the json to fit in the original pattern
     data.push(req.body);
     res.send('Added country ' + name + ' to list!');
 });
 
 
 /**
-* DELETE-Methods
-*/
+ * DELETE-Methods
+ */
 
 /**
-* deletes the last country
-*/
+ * deletes the last country
+ */
 app.delete('/items', function(req, res) {
-    if(data.length > 0) {
+    if (data.length > 0) {
         var popped = data.pop();
         res.send('Deleted last country: ' + popped.name);
     } else {
@@ -142,15 +152,15 @@ app.delete('/items', function(req, res) {
 });
 
 /**
-* deletes the country with the given id
-*/
+ * deletes the country with the given id
+ */
 app.delete('/items/:id', function(req, res) {
     var id = req.params.id;
     var index = data.findIndex(function(element) {
         return element.id == id;
     });
-    
-    if(index >= 0) {
+
+    if (index >= 0) {
         data.splice(index, 1);
         res.send('Item {' + id + '} deleted successfully.');
     } else {
@@ -162,7 +172,7 @@ app.delete('/items/:id', function(req, res) {
 
 // DO NOT CHANGE!
 // bind server to port
-var server = app.listen(3000, function () {
+var server = app.listen(3000, function() {
     var host = server.address().address;
     var port = server.address().port;
     console.log('Example app listening at http://%s:%s', host, port);
