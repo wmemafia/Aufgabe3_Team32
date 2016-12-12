@@ -90,7 +90,9 @@ app.get('/items/:id1/:id2', nocache, function(req, res) {
  * returns all the properties of a data object
  */
 app.get('/properties', nocache, function(req, res) {
-    if (data.length > 0) {} else {
+    if (data.length > 0) {
+        res.send(Object.keys(data[0]));
+    } else {
         res.send('No data available');
     }
 });
