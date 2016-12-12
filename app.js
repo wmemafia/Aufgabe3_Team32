@@ -40,7 +40,7 @@ converter.fromFile("./world_data.csv", function(err, result) {
 * get all countries wirh properties
 */
 app.get('/items', function(req, res) {
-    res.send(JSON.stringify(data, null, 4));
+    res.send(data);
 });
 
 /**
@@ -52,7 +52,7 @@ app.get('/items/:id', function(req, res) {
         return element.id == id;
     });
     if( country !== undefined) {
-        res.send(JSON.stringify(country, null, 4));
+        res.send(country);
     } else {
         res.status(404).send('No such id {' + id + '} in database.');
     } 
@@ -75,7 +75,7 @@ app.get('/items/:id1/:id2', function(req, res) {
     if (result.length == 0) {
         res.status(400).send('Range not possible.');
     } else {
-        res.send(JSON.stringify(result, null, 4));
+        res.send(result);
     }
 });
 
@@ -84,7 +84,7 @@ app.get('/items/:id1/:id2', function(req, res) {
 */
 app.get('/properties', function(req, res) {
     if(data.length > 0) {
-        res.send(JSON.stringify(Object.keys(data[0])));
+        res.send(Object.keys(data[0]));
     } else {
         res.send('No data available');
     }
