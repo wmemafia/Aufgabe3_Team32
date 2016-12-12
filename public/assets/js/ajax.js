@@ -31,6 +31,7 @@ $(document).ready(function () {
     
     var possibleSelectValues = ['id', 'name', 'birth rate per 1000', 'cell phones per 100', 'children per woman', 'electricity consumption per capita', 'internet user per 100'];
     
+    // load property list
     $.ajax({
         type: 'GET',
         url: 'http://localhost:3000/properties',
@@ -39,7 +40,6 @@ $(document).ready(function () {
             if(data) {
                 var selects = '';
                 $.each(data, function(k, v) {
-                    console.log(v);
                     if($.inArray(v, possibleSelectValues) !== -1) {
                         selects += '<option value="' + k + '">' + v + '</option>'; 
                     }                    
@@ -114,6 +114,32 @@ $('#country_filter').submit(function (event) {
                 alert('error: ' + textStatus + ': ' + errorThrown);
             }
         }); 
+    }
+    event.preventDefault();
+});
+
+
+// post data 
+$('#country_add').submit(function(event) {
+    if( $('#country_name').val() && $('#country_birth').val() && $('#country_cellphone').val()) {
+        var name = $('#country_name').val();
+        var birth = $('#country_birth').val();
+        var phones = $('#country_cellphone').val();
+        var dataToSend = '{ "name" : "' + name + '", "birth rate per 1000" : ' + birth + ', "cell phones per 100" : ' + phones + '}'
+        console.log(dataToSend);
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:3000/items',
+            data: dataToSend,
+            contentType: 'application/json',
+            success: function() {
+                $('#country_name').val('');
+                $('#country_birth').val('');
+                $('#country_cellphone').val('');
+                location.reload();
+            }
+        });
+        
     }
     event.preventDefault();
 });

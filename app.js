@@ -122,9 +122,7 @@ app.get('/properties/:num', nocache, function(req, res) {
 
 
 app.post('/items', function(req, res) {
-    var name = req.body.country_name;
-    var birth = req.body.country_birth;
-    var cellphone = req.body.country_cellphone;
+    var name = req.body.name;
     // maybe we should validate the input more
     // #TODO: we could adjust the json to fit in the original pattern
     data.push(req.body);
