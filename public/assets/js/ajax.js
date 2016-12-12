@@ -165,6 +165,20 @@ $('#country_delete').submit(function(event) {
         });
     }
     event.preventDefault();
+});
+
+// show column
+$('#show_selected_prop').click(function() {
+    var val = parseInt($('#prop_selection').val()) + 1;
+    $("tr td:nth-child(" + val + ")").show();
+    $("tr th:nth-child(" + val + ")").show();
 })
+
+// hide column
+$('#hide_selected_prop').click(function() {
+    var val = parseInt($('#prop_selection').val()) + 1;
+    $("tr td:nth-child(" + val + ")").hide();
+    $("tr th:nth-child(" + val + ")").hide();
+});
 
 
