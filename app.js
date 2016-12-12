@@ -52,6 +52,7 @@ app.get('/items/:id', function(req, res) {
         return element.id == id;
     });
     if (country !== undefined) {
+        console.log(country); // DEBUG Output!!!
         res.send(country);
     } else {
         res.status(404).send('No such id {' + id + '} in database.');

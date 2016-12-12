@@ -38,6 +38,8 @@ $('#country_filter').submit(function (event) {
                 , async: true
                 , success: function (data) {
                     if (data) {
+                        console.log(data);   // Debug
+                        console.log(data['id']); // DEBUG
                         var content = '';
                         content += '<tr>';
                         content += '<td>' + data['id'] + '</td>';
@@ -57,6 +59,12 @@ $('#country_filter').submit(function (event) {
             });
         }
     }
-    else {}
+    else {
+        var range = $('#country_filter_range').val.split('-');
+        var first = range[0].trim();
+        var second = range[1].trim();
+        console.log('first: ' + first);
+        console.log('second: ' + second);
+    }
     event.preventDefault();
 });
