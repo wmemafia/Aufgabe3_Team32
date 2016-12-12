@@ -15,6 +15,13 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // END DO NOT CHANGE!
 
+function nocache(req, res, next) {
+    res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+    res.header('Expires', '-1');
+    res.header('Pragma', 'no-cache');
+    next();
+}
+
 
 /**************************************************************************
  ****************************** csv2json *********************************
@@ -39,14 +46,14 @@ converter.fromFile("./world_data.csv", function(err, result) {
 /**
  * get all countries with properties
  */
-app.get('/items', function(req, res) {
+app.get('/items', nocache, function(req, res) {
     res.send(data);
 });
 
 /**
  * get country with given id and properties
  */
-app.get('/items/:id', function(req, res) {
+app.get('/items/:id', nocache, function(req, res) {
     var id = req.params.id;
     var country = data.find(function(element) {
         return element.id == id;
@@ -62,7 +69,7 @@ app.get('/items/:id', function(req, res) {
 /**
  * get countries in defined range with properties
  */
-app.get('/items/:id1/:id2', function(req, res) {
+app.get('/items/:id1/:id2', nocache, function(req, res) {
     var id1 = +req.params.id1 <= +req.params.id2 ? +req.params.id1 : +req.params.id2;
     var id2 = +req.params.id1 >= +req.params.id2 ? +req.params.id1 : +req.params.id2;
     var result = [];
@@ -83,7 +90,7 @@ app.get('/items/:id1/:id2', function(req, res) {
 /**
  * returns all the properties of a data object
  */
-app.get('/properties', function(req, res) {
+app.get('/properties', nocache, function(req, res) {
     if (data.length > 0) {} else {
         res.send('No data available');
     }
@@ -92,7 +99,7 @@ app.get('/properties', function(req, res) {
 /**
  * returns the property with the given number if exists
  */
-app.get('/properties/:num', function(req, res) {
+app.get('/properties/:num', nocache, function(req, res) {
     var num = req.params.num;
     if (data.length > 0) {
         // #TODO: check if num in bounds of array (NaN ??)
