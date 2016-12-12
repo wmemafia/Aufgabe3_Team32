@@ -1,9 +1,10 @@
+// Load complete table on start
 $(document).ready(function () {
     $.ajax({
-        type: 'GET'
-        , url: 'http://localhost:3000/items'
-        , async: true
-        , success: function (data) {
+        type: 'GET',
+        url: 'http://localhost:3000/items',
+        async: true,
+        success: function (data) {
             if (data) {
                 var len = data.length;
                 var content = '';
@@ -27,8 +28,33 @@ $(document).ready(function () {
             alert('error: ' + textStatus + ': ' + errorThrown);
         }
     });
+    
+    var possibleSelectValues = ['id', 'name', 'birth rate per 1000', 'cell phones per 100', 'children per woman', 'electricity consumption per capita', 'internet user per 100'];
+    
+    $.ajax({
+        type: 'GET',
+        url: 'http://localhost:3000/properties',
+        async: true,
+        success: function(data) {
+            if(data) {
+                var selects = '';
+                $.each(data, function(k, v) {
+                    console.log(v);
+                    if($.inArray(v, possibleSelectValues) !== -1) {
+                        selects += '<option value="' + k + '">' + v + '</option>'; 
+                    }                    
+                });
+                $('#prop_selection').html(selects);
+            }
+        }, error: function(jqXHR, textStatus, errorThrown) {
+            alert('error: ' + textStatus + ': ' + errorThrown);
+        } 
+    });
+    
     return false;
 });
+
+// apply filter
 $('#country_filter').submit(function (event) {
     if (!$('#country_filter_range').val()) {
         if ($('#country_filter_id').val()) {
@@ -61,8 +87,6 @@ $('#country_filter').submit(function (event) {
         var range = $('#country_filter_range').val().split('-');
         var first = range[0].trim();
         var second = range[1].trim();
-        console.log('first: ' + first);
-        console.log('second: ' + second);
         $.ajax({
             type: 'GET',
             url: 'http://localhost:3000/items/' + first + '/' + second,
@@ -93,3 +117,5 @@ $('#country_filter').submit(function (event) {
     }
     event.preventDefault();
 });
+
+
