@@ -51,13 +51,8 @@ app.get('/items/:id', function(req, res) {
     var country = data.find(function(element) {
         return element.id == id;
     });
-<<<<<<< HEAD
-    if( country !== undefined) {
-        res.send(country);
-=======
     if (country !== undefined) {
-        res.send(JSON.stringify(country, null, 4));
->>>>>>> Fix Typo
+        res.send(country);
     } else {
         res.status(404).send('No such id {' + id + '} in database.');
     }
@@ -88,14 +83,7 @@ app.get('/items/:id1/:id2', function(req, res) {
  * returns all the properties of a data object
  */
 app.get('/properties', function(req, res) {
-<<<<<<< HEAD
-    if(data.length > 0) {
-        res.send(Object.keys(data[0]));
-=======
-    if (data.length > 0) {
-        res.send(JSON.stringify(Object.keys(data[0])));
->>>>>>> Fix Typo
-    } else {
+    if (data.length > 0) {} else {
         res.send('No data available');
     }
 });
