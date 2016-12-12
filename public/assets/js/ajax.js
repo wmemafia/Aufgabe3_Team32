@@ -33,13 +33,11 @@ $('#country_filter').submit(function (event) {
     if (!$('#country_filter_range').val()) {
         if ($('#country_filter_id').val()) {
             $.ajax({
-                type: 'GET'
-                , url: 'http://localhost:3000/items/' + $('#country_filter_id').val()
-                , async: true
-                , success: function (data) {
+                type: 'GET',
+                url: 'http://localhost:3000/items/' + $('#country_filter_id').val(),
+                async: true,
+                success: function (data) {
                     if (data) {
-                        console.log(data);   // Debug
-                        console.log(data['id']); // DEBUG
                         var content = '';
                         content += '<tr>';
                         content += '<td>' + data['id'] + '</td>';
@@ -60,11 +58,38 @@ $('#country_filter').submit(function (event) {
         }
     }
     else {
-        var range = $('#country_filter_range').val.split('-');
+        var range = $('#country_filter_range').val().split('-');
         var first = range[0].trim();
         var second = range[1].trim();
         console.log('first: ' + first);
         console.log('second: ' + second);
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:3000/items/' + first + '/' + second,
+            async: true,
+            success: function (data) {
+                if (data) {
+                var len = data.length;
+                var content = '';
+                if (len > 0) {
+                    for (var i = 0; i < len; i++) {
+                        content += '<tr>';
+                        content += '<td>' + data[i]['id'] + '</td>';
+                        content += '<td>' + data[i]['name'] + '</td>';
+                        content += '<td>' + data[i]['birth rate per 1000'] + '</td>';
+                        content += '<td>' + data[i]['cell phones per 100'] + '</td>';
+                        content += '<td>' + data[i]['children per woman'] + '</td>';
+                        content += '<td>' + data[i]['electricity consumption per capita'] + '</td>';
+                        content += '<td>' + data[i]['internet user per 100'] + '</td>';
+                        content += '</tr>';
+                    }
+                    $('#table_body').html(content);
+                }
+            }
+            }, error: function(jqXHR, textStatus, errorThrown) {
+                alert('error: ' + textStatus + ': ' + errorThrown);
+            }
+        }); 
     }
     event.preventDefault();
 });
